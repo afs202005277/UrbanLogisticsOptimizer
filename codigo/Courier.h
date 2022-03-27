@@ -6,11 +6,11 @@
 class Courier {
 private:
     std::string licensePlate;
-    double volMax;
-    double pesoMax;
-    double transportFee;
+    unsigned int volMax;
+    unsigned int pesoMax;
+    unsigned int transportFee;
 public:
-    Courier(const std::string &licensePlate, double volMax, double pesoMax, double transportFee);
+    Courier(const std::string &licensePlate, unsigned int volMax, unsigned int pesoMax, unsigned int transportFee);
 };
 
 

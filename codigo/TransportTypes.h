@@ -1,16 +1,16 @@
 #ifndef PROJETO1_TRANSPORTTYPES_H
 #define PROJETO1_TRANSPORTTYPES_H
 struct NormalTransport{
-    double weight;
-    double volume;
-    double payment;
+    unsigned int weight;
+    unsigned int volume;
+    unsigned int payment;
 };
 
 struct ExpressTransport{
-    double weight;
-    double volume;
-    double payment;
-    int timeToDelivery;
+    unsigned int weight;
+    unsigned int volume;
+    unsigned int payment;
+    unsigned int timeToDelivery;
 };
 
 #endif //PROJETO1_TRANSPORTTYPES_H

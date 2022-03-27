@@ -2,12 +2,15 @@
 #define PROJETO1_WAREHOUSEMANAGEMENT_H
 #include <vector>
 #include "Courier.h"
-#include "TransportRequest.h"
+#include "TransportTypes.h"
 
 class WarehouseManagement {
 private:
     std::vector<Courier> couriers;
-    std::vector<TransportRequest> transportRequests;
+    std::vector<NormalTransport> normalTransports;
+    std::vector<ExpressTransport> expressTransports;
+public:
+    WarehouseManagement(const std::string &couriersData, const std::string &transportsData);
 };
 
 

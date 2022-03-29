@@ -4,5 +4,6 @@ using namespace std;
 
 int main() {
     WarehouseManagement warehouseManagement("../input/carrinhas.txt", "../input/normalTransports.txt", "../input/expressTransports.txt");
+    cout << warehouseManagement.optimizeNormalPackagesDistribution() << endl;
     return 0;
 }

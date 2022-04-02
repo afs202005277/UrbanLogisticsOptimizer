@@ -18,7 +18,6 @@ vector<Courier> WarehouseManagement::readCourierData(const string &couriersData)
     ifstream input(couriersData);
     string line;
     getline(input, line);
-    input.ignore();
     while(!input.eof()){
         unsigned int volMax, pesoMax, custo;
         string plate;
@@ -34,11 +33,10 @@ std::vector<NormalTransport> WarehouseManagement::readNormalTransportsData(const
     ifstream data(input);
     string line;
     getline(data, line);
-    data.ignore();
     while(!data.eof()){
         unsigned int volume, peso, recompensa;
         data >> volume >> peso >> recompensa;
-        res.emplace_back(NormalTransport{peso, volume, recompensa, false});
+        res.emplace_back(NormalTransport{peso, volume, recompensa, false, peso * 5000000 + volume, (volume * peso) / (double) recompensa});
         if (peso < minimumWeight)
             minimumWeight = peso;
         if (volume < minimumVolume)
@@ -53,7 +51,6 @@ std::vector<ExpressTransport> WarehouseManagement::readExpressTransportsData(con
     ifstream data(input);
     string line;
     getline(data, line);
-    data.ignore();
     while(!data.eof()){
         unsigned int volume, peso, recompensa, tempo;
         data >> volume >> peso >> recompensa >> tempo;
@@ -99,4 +96,49 @@ unsigned int WarehouseManagement::knapsack(Courier &courier) {
 
 bool WarehouseManagement::canCarry(const Courier& courier, NormalTransport package) {
     return courier.getPesoAtual() + package.weight <= courier.getPesoMax() && courier.getVolAtual() + package.volume <= courier.getVolMax();
+}
+
+
+
+int WarehouseManagement::optimizeProfit() {
+    sort(couriers.begin(), couriers.end(), sortCouriersByRatio);
+    sort(normalTransports.begin(), normalTransports.end(), sortNormalTransportByRatio);
+
+    unsigned int courierIdx = 0, usedCouriers = 0, expenses=0;
+    while(notAssignedNormalPackages > 0 && courierIdx < couriers.size()){
+        unsigned int packagesAssigned = knapsack(couriers[courierIdx]);
+        if (packagesAssigned != 0) {
+            notAssignedNormalPackages -= packagesAssigned;
+            expenses += couriers[courierIdx].getTransportFee();
+            usedCouriers++;
+        }
+        courierIdx++;
+    }
+    unsigned int revenue=0;
+    for (auto &package:normalTransports){
+        revenue += package.payment;
+    }
+    return revenue - expenses;
+}
+
+bool WarehouseManagement::sortCouriersByRatio(const Courier &c1, const Courier &c2) {
+    return c1.getRatio() > c2.getRatio();
+}
+
+bool WarehouseManagement::sortNormalTransportByRatio(const NormalTransport &n1, const NormalTransport &n2) {
+    return n1.ratio < n2.ratio;
+}
+
+void WarehouseManagement::resetElements() {
+    for (auto &package:normalTransports)
+        package.assigned = false;
+
+    for (auto &courier:couriers) {
+        vector<NormalTransport> tmp;
+        courier.setDeliveries(tmp);
+        courier.setPesoAtual(0);
+        courier.setVolAtual(0);
+    }
+
+    notAssignedNormalPackages = normalTransports.size();
 }

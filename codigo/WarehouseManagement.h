@@ -13,9 +13,12 @@ private:
     std::vector<NormalTransport> normalTransports;
     std::vector<ExpressTransport> expressTransports;
 
-    static std::vector<Courier> readCourierData(const std::string &couriersData) ;
+    static std::vector<Courier> readCourierData(const std::string &couriersData);
     std::vector<NormalTransport> readNormalTransportsData(const std::string &input);
-    static std::vector<ExpressTransport> readExpressTransportsData(const std::string &input) ;
+    static std::vector<ExpressTransport> readExpressTransportsData(const std::string &input);
+    static bool sortCouriersByRatio(const Courier &c1, const Courier &c2);
+    static bool sortNormalTransportByRatio(const NormalTransport &n1, const NormalTransport &n2);
+
 public:
     WarehouseManagement(const std::string &couriersData, const std::string &normalTransportsData,
                         const std::string &expressTransportsData);
@@ -25,6 +28,10 @@ public:
     unsigned int knapsack(Courier &courier);
 
     static bool canCarry(const Courier& courier, NormalTransport package);
+
+    int optimizeProfit();
+
+    void resetElements();
 };
 
 

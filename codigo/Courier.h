@@ -12,6 +12,7 @@ private:
     unsigned int pesoMax, pesoAtual=0;
     unsigned int transportFee;
     std::vector<NormalTransport> deliveries;
+    double ratio;
 public:
     bool operator<(const Courier &rhs) const;
 
@@ -21,7 +22,6 @@ public:
 
     bool operator>=(const Courier &rhs) const;
 
-public:
     Courier(std::string licensePlate, unsigned int volMax, unsigned int pesoMax, unsigned int transportFee);
 
     unsigned int getNumDeliveries() const;
@@ -37,6 +37,16 @@ public:
     void addPackage(NormalTransport package);
 
     void removePackage(NormalTransport package);
+
+    double getRatio() const;
+
+    void setDeliveries(const std::vector<NormalTransport> &deliveries);
+
+    void setVolAtual(unsigned int volAtual);
+
+    void setPesoAtual(unsigned int pesoAtual);
+
+    unsigned int getTransportFee() const;
 };
 
 

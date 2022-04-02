@@ -5,6 +5,8 @@ struct NormalTransport{
     unsigned int volume;
     unsigned int payment;
     bool assigned;
+    unsigned int combinedStorage;
+    double ratio;
 
     friend bool operator==(const NormalTransport &lhs, const NormalTransport &rhs) {
         return lhs.weight == rhs.weight &&

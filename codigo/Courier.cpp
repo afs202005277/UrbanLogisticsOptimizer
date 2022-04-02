@@ -4,7 +4,9 @@
 using namespace std;
 
 Courier::Courier(std::string licensePlate, unsigned int volMax, unsigned int pesoMax, unsigned int transportFee) : licensePlate(std::move(
-        licensePlate)), volMax(volMax), pesoMax(pesoMax), transportFee(transportFee) {}
+        licensePlate)), volMax(volMax), pesoMax(pesoMax), transportFee(transportFee) {
+    ratio = (volMax * pesoMax) / (double) transportFee;
+}
 
 bool Courier::operator<(const Courier &rhs) const {
     if (volMax < rhs.volMax)
@@ -61,4 +63,24 @@ void Courier::removePackage(NormalTransport package) {
 
 unsigned int Courier::getNumDeliveries() const {
     return deliveries.size();
+}
+
+double Courier::getRatio() const {
+    return ratio;
+}
+
+void Courier::setDeliveries(const vector<NormalTransport> &deliveries) {
+    Courier::deliveries = deliveries;
+}
+
+void Courier::setVolAtual(unsigned int volAtual) {
+    Courier::volAtual = volAtual;
+}
+
+void Courier::setPesoAtual(unsigned int pesoAtual) {
+    Courier::pesoAtual = pesoAtual;
+}
+
+unsigned int Courier::getTransportFee() const {
+    return transportFee;
 }

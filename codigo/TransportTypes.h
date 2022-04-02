@@ -25,6 +25,22 @@ struct ExpressTransport{
     unsigned int volume;
     unsigned int payment;
     unsigned int timeToDelivery;
+
+    bool operator<(const ExpressTransport &rhs) const {
+        return timeToDelivery < rhs.timeToDelivery;
+    }
+
+    bool operator>(const ExpressTransport &rhs) const {
+        return rhs < *this;
+    }
+
+    bool operator<=(const ExpressTransport &rhs) const {
+        return !(rhs < *this);
+    }
+
+    bool operator>=(const ExpressTransport &rhs) const {
+        return !(*this < rhs);
+    }
 };
 
 #endif //PROJETO1_TRANSPORTTYPES_H

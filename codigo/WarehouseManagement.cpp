@@ -142,3 +142,13 @@ void WarehouseManagement::resetElements() {
 
     notAssignedNormalPackages = normalTransports.size();
 }
+
+double WarehouseManagement::optimizeExpressTransports() {
+    sort(expressTransports.begin(), expressTransports.end());
+    unsigned int sum=0, total=0;
+    for (auto i:expressTransports){
+        sum += i.timeToDelivery;
+        total += sum;
+    }
+    return total / (double) expressTransports.size();
+}

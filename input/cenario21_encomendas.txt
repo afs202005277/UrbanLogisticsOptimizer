@@ -1,7 +1,7 @@
-volume peso recompensa
-20 20 5
-70 20 10
-20 20 5
-20 20 5
-20 20 5
-20 20 5
+volume peso recompensa duração(s)
+20 20 5 10
+70 20 10 10
+20 20 5 10
+20 20 5 10
+20 20 5 10
+20 20 5 10

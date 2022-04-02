@@ -32,6 +32,8 @@ public:
     int optimizeProfit();
 
     void resetElements();
+
+    double optimizeExpressTransports();
 };
 
 

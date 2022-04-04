@@ -6,6 +6,7 @@ using namespace std;
 Courier::Courier(std::string licensePlate, unsigned int volMax, unsigned int pesoMax, unsigned int transportFee) : licensePlate(std::move(
         licensePlate)), volMax(volMax), pesoMax(pesoMax), transportFee(transportFee) {
     ratio = (volMax * pesoMax) / (double) transportFee;
+    available = true;
 }
 
 bool Courier::operator<(const Courier &rhs) const {
@@ -83,4 +84,16 @@ void Courier::setPesoAtual(unsigned int pesoAtual) {
 
 unsigned int Courier::getTransportFee() const {
     return transportFee;
+}
+
+bool Courier::isAvailable() const {
+    return available;
+}
+
+void Courier::setAvailable(bool available) {
+    Courier::available = available;
+}
+
+const string &Courier::getLicensePlate() const {
+    return licensePlate;
 }

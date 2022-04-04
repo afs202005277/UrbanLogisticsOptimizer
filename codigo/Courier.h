@@ -13,6 +13,7 @@ private:
     unsigned int transportFee;
     std::vector<NormalTransport> deliveries;
     double ratio;
+    bool available;
 public:
     bool operator<(const Courier &rhs) const;
 
@@ -47,6 +48,12 @@ public:
     void setPesoAtual(unsigned int pesoAtual);
 
     unsigned int getTransportFee() const;
+
+    bool isAvailable() const;
+
+    void setAvailable(bool available);
+
+    const std::string &getLicensePlate() const;
 };
 
 

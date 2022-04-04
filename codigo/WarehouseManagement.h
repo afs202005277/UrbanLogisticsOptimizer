@@ -36,6 +36,8 @@ public:
     double optimizeExpressTransports();
 
     double getOperationEfficiency();
+
+    bool changeCourierAvailability(const std::string &licensePlate, bool available);
 };
 
 

@@ -75,6 +75,9 @@ unsigned int WarehouseManagement::optimizeNormalPackagesDistribution() {
 }
 
 unsigned int WarehouseManagement::knapsack(Courier &courier) {
+    if (!courier.isAvailable()){
+        return 0;
+    }
     unsigned int max = 0;
     if (courier.getPesoAtual() + minimumWeight >= courier.getPesoMax() || courier.getVolAtual() + minimumVolume >= courier.getVolMax())
         return courier.getNumDeliveries();
@@ -156,4 +159,14 @@ double WarehouseManagement::optimizeExpressTransports() {
         total += sum;
     }
     return total / (double) expressTransports.size();
+}
+
+bool WarehouseManagement::changeCourierAvailability(const std::string &licensePlate, bool available) {
+    for (auto & courier : couriers){
+        if (courier.getLicensePlate() == licensePlate){
+            courier.setAvailable(available);
+            return true;
+        }
+    }
+    return false;
 }

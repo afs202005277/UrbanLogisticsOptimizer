@@ -1,6 +1,4 @@
 #include "Courier.h"
-#include <iostream>
-#include <utility>
 using namespace std;
 
 Courier::Courier(std::string licensePlate, unsigned int volMax, unsigned int pesoMax, unsigned int transportFee) : licensePlate(std::move(
@@ -15,18 +13,6 @@ bool Courier::operator<(const Courier &rhs) const {
     if (volMax == rhs.volMax && pesoMax < rhs.pesoMax)
         return true;
     return false;
-}
-
-bool Courier::operator>(const Courier &rhs) const {
-    return rhs < *this;
-}
-
-bool Courier::operator<=(const Courier &rhs) const {
-    return !(rhs < *this);
-}
-
-bool Courier::operator>=(const Courier &rhs) const {
-    return !(*this < rhs);
 }
 
 unsigned int Courier::getVolMax() const {

@@ -107,13 +107,12 @@ int WarehouseManagement::optimizeProfit() {
     sort(couriers.begin(), couriers.end(), sortCouriersByRatio);
     sort(normalTransports.begin(), normalTransports.end(), sortNormalTransportByRatio);
 
-    unsigned int courierIdx = 0, usedCouriers = 0, expenses=0;
+    unsigned int courierIdx = 0, expenses=0;
     while(notAssignedNormalPackages > 0 && courierIdx < couriers.size()){
         unsigned int packagesAssigned = knapsack(couriers[courierIdx]);
         if (packagesAssigned != 0) {
             notAssignedNormalPackages -= packagesAssigned;
             expenses += couriers[courierIdx].getTransportFee();
-            usedCouriers++;
         }
         courierIdx++;
     }

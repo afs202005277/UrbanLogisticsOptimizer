@@ -1,5 +1,6 @@
 #ifndef PROJETO1_TRANSPORTTYPES_H
 #define PROJETO1_TRANSPORTTYPES_H
+
 struct NormalTransport{
     unsigned int weight;
     unsigned int volume;
@@ -8,15 +9,13 @@ struct NormalTransport{
     unsigned int combinedStorage;
     double ratio;
 
-    friend bool operator==(const NormalTransport &lhs, const NormalTransport &rhs) {
-        return lhs.weight == rhs.weight &&
-               lhs.volume == rhs.volume &&
-               lhs.payment == rhs.payment &&
-               lhs.assigned == rhs.assigned;
-    }
-
-    friend bool operator!=(const NormalTransport &lhs, const NormalTransport &rhs) {
-        return !(rhs == lhs);
+    bool operator==(const NormalTransport &rhs) const {
+        return weight == rhs.weight &&
+               volume == rhs.volume &&
+               payment == rhs.payment &&
+               assigned == rhs.assigned &&
+               combinedStorage == rhs.combinedStorage &&
+               ratio == rhs.ratio;
     }
 };
 
@@ -28,18 +27,6 @@ struct ExpressTransport{
 
     bool operator<(const ExpressTransport &rhs) const {
         return timeToDelivery < rhs.timeToDelivery;
-    }
-
-    bool operator>(const ExpressTransport &rhs) const {
-        return rhs < *this;
-    }
-
-    bool operator<=(const ExpressTransport &rhs) const {
-        return !(rhs < *this);
-    }
-
-    bool operator>=(const ExpressTransport &rhs) const {
-        return !(*this < rhs);
     }
 };
 

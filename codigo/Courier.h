@@ -14,16 +14,11 @@ private:
     std::vector<NormalTransport> deliveries;
     double ratio;
     bool available;
+
 public:
-    bool operator<(const Courier &rhs) const;
-
-    bool operator>(const Courier &rhs) const;
-
-    bool operator<=(const Courier &rhs) const;
-
-    bool operator>=(const Courier &rhs) const;
-
     Courier(std::string licensePlate, unsigned int volMax, unsigned int pesoMax, unsigned int transportFee);
+
+    bool operator<(const Courier &rhs) const;
 
     unsigned int getNumDeliveries() const;
 

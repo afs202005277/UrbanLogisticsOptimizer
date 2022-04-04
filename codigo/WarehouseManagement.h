@@ -34,6 +34,8 @@ public:
     void resetElements();
 
     double optimizeExpressTransports();
+
+    double getOperationEfficiency();
 };
 
 

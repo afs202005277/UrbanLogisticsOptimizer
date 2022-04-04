@@ -61,7 +61,7 @@ std::vector<ExpressTransport> WarehouseManagement::readExpressTransportsData(con
 }
 
 unsigned int WarehouseManagement::optimizeNormalPackagesDistribution() {
-    sort(couriers.begin(), couriers.end(), greater<Courier>());
+    sort(couriers.begin(), couriers.end(), greater<>());
     unsigned int courierIdx = 0, usedCouriers = 0;
     while(notAssignedNormalPackages > 0 && courierIdx < couriers.size()){
         unsigned int packagesAssigned = knapsack(couriers[courierIdx]);
@@ -118,7 +118,12 @@ int WarehouseManagement::optimizeProfit() {
     for (auto &package:normalTransports){
         revenue += package.payment;
     }
-    return revenue - expenses;
+    return (int) (revenue - expenses);
+}
+
+double WarehouseManagement::getOperationEfficiency() {
+    unsigned int deliveredProducts = normalTransports.size() - notAssignedNormalPackages;
+    return deliveredProducts / (double) normalTransports.size();
 }
 
 bool WarehouseManagement::sortCouriersByRatio(const Courier &c1, const Courier &c2) {

@@ -20,6 +20,8 @@ public:
 
     bool operator<(const Courier &rhs) const;
 
+    bool operator>(const Courier &rhs) const;
+
     unsigned int getNumDeliveries() const;
 
     unsigned int getVolMax() const;

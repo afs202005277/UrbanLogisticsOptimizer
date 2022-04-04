@@ -15,6 +15,10 @@ bool Courier::operator<(const Courier &rhs) const {
     return false;
 }
 
+bool Courier::operator>(const Courier &rhs) const {
+    return rhs < *this;
+}
+
 unsigned int Courier::getVolMax() const {
     return volMax;
 }

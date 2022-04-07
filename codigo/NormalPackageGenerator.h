@@ -17,8 +17,6 @@ public:
     NormalPackageGenerator(const std::string &sampleFile, unsigned int numPackages);
 
     void generate();
-
-    std::string randomPlateGenerator();
 };
 
 

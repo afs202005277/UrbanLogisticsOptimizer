@@ -9,10 +9,11 @@ private:
     unsigned int amountCouriers_Sample;
     std::vector<std::string> instances;
     std::string header;
-    static std::vector<unsigned int> amountCouriers;
 
 public:
     CourierGenerator(const std::string &sampleFile, unsigned int numCouriers);
+
+    static std::vector<unsigned int> amountCouriers;
 
     void generate();
 

@@ -1,7 +1,3 @@
-//
-// Created by andre on 04/04/2022.
-//
-
 #include "NormalPackageGenerator.h"
 #include <fstream>
 #include <unordered_set>

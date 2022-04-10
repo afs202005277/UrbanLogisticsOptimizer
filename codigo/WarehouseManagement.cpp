@@ -5,6 +5,7 @@
 
 using namespace std;
 
+
 WarehouseManagement::WarehouseManagement(const std::string &couriersData, const std::string &normalTransportsData,
                                          const std::string &expressTransportsData) {
     couriers = readCourierData(couriersData);
@@ -13,6 +14,11 @@ WarehouseManagement::WarehouseManagement(const std::string &couriersData, const 
     notAssignedNormalPackages = normalTransports.size();
 }
 
+/**
+ * Reads courier data from the given file and returns a vector of Couriers with the file information
+ * @param couriersData data file location
+ * @return Courier vector with file data
+ */
 vector<Courier> WarehouseManagement::readCourierData(const string &couriersData) {
     vector<Courier> res;
     ifstream input(couriersData);
@@ -28,6 +34,11 @@ vector<Courier> WarehouseManagement::readCourierData(const string &couriersData)
     return res;
 }
 
+/**
+ * Reads Normal Transport data from the given file and returns a vector of Normal Transport with the file information
+ * @param input data file location
+ * @return Normal Transport vector with file data
+ */
 std::vector<NormalTransport> WarehouseManagement::readNormalTransportsData(const string &input) {
     vector<NormalTransport> res;
     ifstream data(input);
@@ -46,6 +57,11 @@ std::vector<NormalTransport> WarehouseManagement::readNormalTransportsData(const
     return res;
 }
 
+/**
+ * Reads Express Transport data from the given file and returns a vector of Express Transport with the file information
+ * @param input data file location
+ * @return Express Transport vector with file data
+ */
 std::vector<ExpressTransport> WarehouseManagement::readExpressTransportsData(const string &input) {
     vector<ExpressTransport> res;
     ifstream data(input);
@@ -60,6 +76,10 @@ std::vector<ExpressTransport> WarehouseManagement::readExpressTransportsData(con
     return res;
 }
 
+/**
+ * Case 1: Function that optimizes the packages in order to minimize the use of couriers. Takes use of knapsack function.
+ * @return Number of used Couriers
+ */
 unsigned int WarehouseManagement::optimizeNormalPackagesDistribution() {
     sort(couriers.begin(), couriers.end(), greater<>());
     unsigned int courierIdx = 0, usedCouriers = 0;
@@ -74,6 +94,11 @@ unsigned int WarehouseManagement::optimizeNormalPackagesDistribution() {
     return usedCouriers;
 }
 
+/**
+ * Function that aims to solve the knapsack problem. In this case, the knapsack is a Courier and we pretend to distribute packages.
+ * @param courier
+ * @return Number of packages the courier is carrying.
+ */
 unsigned int WarehouseManagement::knapsack(Courier &courier) {
     if (!courier.isAvailable()){
         return 0;
@@ -97,12 +122,21 @@ unsigned int WarehouseManagement::knapsack(Courier &courier) {
     return courier.getNumDeliveries();
 }
 
+/**
+ * Checks if Courier can carry package.
+ * @param courier
+ * @param package
+ * @return Returns if the Courier can carry package.
+ */
 bool WarehouseManagement::canCarry(const Courier& courier, NormalTransport package) {
     return courier.getPesoAtual() + package.weight <= courier.getPesoMax() && courier.getVolAtual() + package.volume <= courier.getVolMax();
 }
 
 
-
+/**
+ * Case 2: Function thay maximizes the company profit for a given day. Takes use of knapsack function.
+ * @return Returns the profit.
+ */
 int WarehouseManagement::optimizeProfit() {
     sort(couriers.begin(), couriers.end(), sortCouriersByRatio);
     sort(normalTransports.begin(), normalTransports.end(), sortNormalTransportByRatio);
@@ -123,19 +157,34 @@ int WarehouseManagement::optimizeProfit() {
     return (int) (revenue - expenses);
 }
 
+/**
+ * Calculates percentage of delivered packages.
+ * @return Returns the pergentage.
+ */
 double WarehouseManagement::getOperationEfficiency() {
     unsigned int deliveredProducts = normalTransports.size() - notAssignedNormalPackages;
     return deliveredProducts / (double) normalTransports.size();
 }
 
+/**
+ * Auxiliary function to use in sort().
+ * @return Returns true if c1 ratio is higher than c2 and false otherwise.
+ */
 bool WarehouseManagement::sortCouriersByRatio(const Courier &c1, const Courier &c2) {
     return c1.getRatio() > c2.getRatio();
 }
 
+/**
+ * Auxiliary function to use in sort().
+ * @return Returns true if n1 ratio is higher than n2 and false otherwise.
+ */
 bool WarehouseManagement::sortNormalTransportByRatio(const NormalTransport &n1, const NormalTransport &n2) {
     return n1.ratio > n2.ratio;
 }
 
+/**
+ * Resets elements: sets assigned variable to false on all packages and sets current volume and weight to 0 on all couriers.
+ */
 void WarehouseManagement::resetElements() {
     for (auto &package:normalTransports)
         package.assigned = false;
@@ -150,6 +199,10 @@ void WarehouseManagement::resetElements() {
     notAssignedNormalPackages = normalTransports.size();
 }
 
+/**
+ * Case 3: Function that minimizes the mean time of deliveries in a day.
+ * @return Returns the mean time.
+ */
 double WarehouseManagement::optimizeExpressTransports() {
     sort(expressTransports.begin(), expressTransports.end());
     unsigned int sum=0, total=0;
@@ -160,6 +213,12 @@ double WarehouseManagement::optimizeExpressTransports() {
     return total / (double) expressTransports.size();
 }
 
+/**
+ * Changes Courier's availability. Changing availability means that the courier will not be used in the different scenarios.
+ * @param licensePlate identifies the Courier.
+ * @param available defines availability.
+ * @return Returns true if successful and false otherwise.
+ */
 bool WarehouseManagement::changeCourierAvailability(const std::string &licensePlate, bool available) {
     for (auto & courier : couriers){
         if (courier.getLicensePlate() == licensePlate){

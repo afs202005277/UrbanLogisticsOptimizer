@@ -14,6 +14,7 @@ int main() {
     CourierGenerator courierGenerator("../input/carrinhas.txt", 50);
     courierGenerator.generate();*/
     ofstream output("output.txt");
+    /*
     for (auto numNormal:NormalPackageGenerator::amountNormalPackages){
         for (auto numCouriers:CourierGenerator::amountCouriers){
             string courierInput = "../input/generated/couriers/" + to_string(numCouriers) + ".txt";
@@ -33,5 +34,13 @@ int main() {
             output << "Optimize profit: " << chrono::duration_cast<chrono::milliseconds>(end - start).count() << "ms" << endl << endl;
         }
     }
+    */
+    string courierInput = "../input/cenario2_carrinhas.txt";
+    string normalTransportsInput = "../input/cenario2_encomendas.txt";
+    string expressTransportsInput = "../input/cenario21_encomendas.txt";
+    WarehouseManagement warehouseManagement(courierInput, normalTransportsInput, expressTransportsInput);
+    int profit;
+    profit = warehouseManagement.optimizeProfitDynamicPrograming();
+
     return 0;
 }

@@ -1,8 +1,8 @@
 #include "Courier.h"
 using namespace std;
 
-Courier::Courier(std::string licensePlate, unsigned int volMax, unsigned int pesoMax, unsigned int transportFee) : licensePlate(std::move(
-        licensePlate)), volMax(volMax), pesoMax(pesoMax), transportFee(transportFee) {
+Courier::Courier(std::string licensePlate, unsigned int volMax, unsigned int pesoMax, unsigned int transportFee, unsigned int combinedStorage) : licensePlate(std::move(
+        licensePlate)), volMax(volMax), pesoMax(pesoMax), transportFee(transportFee), combinedStorage(combinedStorage) {
     ratio = (volMax * pesoMax) / (double) (transportFee*transportFee);
     available = true;
 }
@@ -86,4 +86,8 @@ void Courier::setAvailable(bool available) {
 
 const string &Courier::getLicensePlate() const {
     return licensePlate;
+}
+
+unsigned int Courier::getCombinedStorage() const {
+    return combinedStorage;
 }

@@ -22,7 +22,7 @@ vector<Courier> WarehouseManagement::readCourierData(const string &couriersData)
         unsigned int volMax, pesoMax, custo;
         string plate;
         input >> volMax >> pesoMax >> custo >> plate;
-        res.emplace_back(Courier(plate, volMax, pesoMax, custo));
+        res.emplace_back(Courier(plate, volMax, pesoMax, custo, pesoMax * 100 + volMax));
     }
     input.close();
     return res;
@@ -36,7 +36,7 @@ std::vector<NormalTransport> WarehouseManagement::readNormalTransportsData(const
     while(!data.eof()){
         unsigned int volume, peso, recompensa;
         data >> volume >> peso >> recompensa;
-        res.emplace_back(NormalTransport{peso, volume, recompensa, false, peso * 5000000 + volume, (double) (recompensa*recompensa) / (volume * peso)});
+        res.emplace_back(NormalTransport{peso, volume, recompensa, false, peso * 100 + volume, (double) (recompensa*recompensa) / (volume * peso)});
         if (peso < minimumWeight)
             minimumWeight = peso;
         if (volume < minimumVolume)
@@ -168,4 +168,43 @@ bool WarehouseManagement::changeCourierAvailability(const std::string &licensePl
         }
     }
     return false;
+}
+
+int WarehouseManagement::dynamicPrograming(Courier &courier) {
+    std::vector<unsigned int> f(courier.getCombinedStorage() + 1, 0);
+    std::vector<unsigned int> g(courier.getCombinedStorage() + 1, 0);
+
+    for (int i = 1; i <= normalTransports.size(); i++) {
+        for (int k = normalTransports[i].combinedStorage ; k <= courier.getCombinedStorage(); k++) {
+            if (normalTransports[i].payment + f[k - normalTransports[i].combinedStorage] > f[k]
+                && !normalTransports[i].assigned) {
+                f[k] = normalTransports[i].payment + f[k - normalTransports[i].combinedStorage];
+                g[k] = i;
+            }
+        }
+    }
+
+    int profit = 0;
+    for(int k = courier.getCombinedStorage(); k > 0 && g[k] > 0; k -= normalTransports[g[k]].combinedStorage) {
+        profit += f[k];
+        normalTransports[g[k]].assigned = true;
+    }
+
+    return profit;
+}
+
+int WarehouseManagement::optimizeProfitDynamicPrograming() {
+    sort(couriers.begin(), couriers.end(), sortCouriersByCombinedStorage);
+
+    unsigned int courierIdx = 0, expenses=0, revenue=0;
+    while(notAssignedNormalPackages > 0 && courierIdx < couriers.size()){
+        revenue += dynamicPrograming(couriers[courierIdx]);
+        expenses += couriers[courierIdx].getTransportFee();
+        courierIdx++;
+    }
+    return (int) (revenue - expenses);
+}
+
+bool WarehouseManagement::sortCouriersByCombinedStorage(const Courier &c1, const Courier &c2) {
+    return c1.getCombinedStorage() < c2.getCombinedStorage();
 }

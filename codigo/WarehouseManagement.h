@@ -17,6 +17,7 @@ private:
     std::vector<NormalTransport> readNormalTransportsData(const std::string &input);
     static std::vector<ExpressTransport> readExpressTransportsData(const std::string &input);
     static bool sortCouriersByRatio(const Courier &c1, const Courier &c2);
+    static bool sortCouriersByCombinedStorage(const Courier &c1, const Courier &c2);
     static bool sortNormalTransportByRatio(const NormalTransport &n1, const NormalTransport &n2);
 
 public:
@@ -38,6 +39,10 @@ public:
     double getOperationEfficiency();
 
     bool changeCourierAvailability(const std::string &licensePlate, bool available);
+
+    int dynamicPrograming(Courier &courier);
+
+    int optimizeProfitDynamicPrograming();
 };
 
 

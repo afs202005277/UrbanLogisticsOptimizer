@@ -3,7 +3,7 @@ using namespace std;
 
 Courier::Courier(std::string licensePlate, unsigned int volMax, unsigned int pesoMax, unsigned int transportFee) : licensePlate(std::move(
         licensePlate)), volMax(volMax), pesoMax(pesoMax), transportFee(transportFee) {
-    ratio = (volMax * pesoMax) / (double) transportFee;
+    ratio = (volMax * pesoMax) / (double) (transportFee*transportFee);
     available = true;
 }
 

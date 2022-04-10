@@ -36,7 +36,7 @@ std::vector<NormalTransport> WarehouseManagement::readNormalTransportsData(const
     while(!data.eof()){
         unsigned int volume, peso, recompensa;
         data >> volume >> peso >> recompensa;
-        res.emplace_back(NormalTransport{peso, volume, recompensa, false, peso * 5000000 + volume, (volume * peso) / (double) recompensa});
+        res.emplace_back(NormalTransport{peso, volume, recompensa, false, peso * 5000000 + volume, (double) (recompensa*recompensa) / (volume * peso)});
         if (peso < minimumWeight)
             minimumWeight = peso;
         if (volume < minimumVolume)
@@ -133,7 +133,7 @@ bool WarehouseManagement::sortCouriersByRatio(const Courier &c1, const Courier &
 }
 
 bool WarehouseManagement::sortNormalTransportByRatio(const NormalTransport &n1, const NormalTransport &n2) {
-    return n1.ratio < n2.ratio;
+    return n1.ratio > n2.ratio;
 }
 
 void WarehouseManagement::resetElements() {

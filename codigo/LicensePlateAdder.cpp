@@ -4,6 +4,8 @@
 #include <unordered_set>
 using namespace std;
 
+. // este tambem não
+
 string randomPlateGenerator(){
     string plate;
     plate += (char) (65 + (rand() % ( 90 - 65 + 1 )));

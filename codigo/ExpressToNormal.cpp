@@ -3,6 +3,7 @@
 #include <fstream>
 using namespace std;
 
+. // não percebo porque é que isto existe
 int main() {
     ifstream input("../input/encomendas.txt");
     ofstream output("../input/encomendas2.txt");

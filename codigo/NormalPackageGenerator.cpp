@@ -20,6 +20,9 @@ NormalPackageGenerator::NormalPackageGenerator(const std::string &sampleFile, un
     input.close();
 }
 
+/**
+ * Uses a sample file of Normal Packages to generate specified amount of Packages (specified by the vector amountNormalPackages) and save them into files (saved in ../input/generated/normalPackages/)
+ */
 void NormalPackageGenerator::generate(){
     for (auto amount:amountNormalPackages){
         string fileName = "../input/generated/normalPackages/" + to_string(amount) + ".txt";

@@ -8,6 +8,7 @@ struct NormalTransport{
     bool assigned;
     unsigned int combinedStorage;
     double ratio;
+    unsigned int priority;
 
     bool operator==(const NormalTransport &rhs) const {
         return weight == rhs.weight &&

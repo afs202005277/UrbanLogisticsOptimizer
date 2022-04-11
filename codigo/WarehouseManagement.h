@@ -18,6 +18,7 @@ private:
     static std::vector<ExpressTransport> readExpressTransportsData(const std::string &input);
     static bool sortCouriersByRatio(const Courier &c1, const Courier &c2);
     static bool sortNormalTransportByRatio(const NormalTransport &n1, const NormalTransport &n2);
+    static bool sortNormalTransportByPriority(const NormalTransport &n1, const NormalTransport &n2);
 
 public:
     WarehouseManagement(const std::string &couriersData, const std::string &normalTransportsData,
@@ -38,6 +39,8 @@ public:
     double getOperationEfficiency();
 
     bool changeCourierAvailability(const std::string &licensePlate, bool available);
+
+    void prioritizeUnsignedPackages();
 };
 
 

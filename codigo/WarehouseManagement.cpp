@@ -47,7 +47,7 @@ std::vector<NormalTransport> WarehouseManagement::readNormalTransportsData(const
     while(!data.eof()){
         unsigned int volume, peso, recompensa;
         data >> volume >> peso >> recompensa;
-        res.emplace_back(NormalTransport{peso, volume, recompensa, false, peso * 5000000 + volume, (double) (recompensa*recompensa) / (volume * peso)});
+        res.emplace_back(NormalTransport{peso, volume, recompensa, false, peso * 5000000 + volume, (double) (recompensa*recompensa) / (volume * peso), 0});
         if (peso < minimumWeight)
             minimumWeight = peso;
         if (volume < minimumVolume)
@@ -77,11 +77,12 @@ std::vector<ExpressTransport> WarehouseManagement::readExpressTransportsData(con
 }
 
 /**
- * Case 1: Function that optimizes the packages in order to minimize the use of couriers. Takes use of knapsack function.
+ * Scenario 1: Function that optimizes the packages in order to minimize the use of couriers. Takes use of knapsack function.
  * @return Number of used Couriers
  */
 unsigned int WarehouseManagement::optimizeNormalPackagesDistribution() {
     sort(couriers.begin(), couriers.end(), greater<>());
+    sort(normalTransports.begin(), normalTransports.end(), sortNormalTransportByPriority);
     unsigned int courierIdx = 0, usedCouriers = 0;
     while(notAssignedNormalPackages > 0 && courierIdx < couriers.size()){
         unsigned int packagesAssigned = knapsack(couriers[courierIdx]);
@@ -91,7 +92,16 @@ unsigned int WarehouseManagement::optimizeNormalPackagesDistribution() {
         }
         courierIdx++;
     }
+    prioritizeUnsignedPackages();
     return usedCouriers;
+}
+
+/**
+ * Auxiliary function to use in sort().
+ * @return Returns true if n1 priority is higher than n2 and false otherwise.
+ */
+bool WarehouseManagement::sortNormalTransportByPriority(const NormalTransport &n1, const NormalTransport &n2) {
+    return n1.priority > n2.priority;
 }
 
 /**
@@ -132,9 +142,19 @@ bool WarehouseManagement::canCarry(const Courier& courier, NormalTransport packa
     return courier.getPesoAtual() + package.weight <= courier.getPesoMax() && courier.getVolAtual() + package.volume <= courier.getVolMax();
 }
 
+/**
+ * Increments the priority of unsigned packages.
+ */
+void WarehouseManagement::prioritizeUnsignedPackages() {
+    for (NormalTransport &a : normalTransports) {
+        if (!a.assigned) {
+            a.priority++;
+        }
+    }
+}
 
 /**
- * Case 2: Function thay maximizes the company profit for a given day. Takes use of knapsack function.
+ * Scenario 2: Function thay maximizes the company profit for a given day. Takes use of knapsack function.
  * @return Returns the profit.
  */
 int WarehouseManagement::optimizeProfit() {
@@ -154,6 +174,7 @@ int WarehouseManagement::optimizeProfit() {
     for (auto &package:normalTransports){
         revenue += package.payment;
     }
+    prioritizeUnsignedPackages();
     return (int) (revenue - expenses);
 }
 
@@ -179,7 +200,7 @@ bool WarehouseManagement::sortCouriersByRatio(const Courier &c1, const Courier &
  * @return Returns true if n1 ratio is higher than n2 and false otherwise.
  */
 bool WarehouseManagement::sortNormalTransportByRatio(const NormalTransport &n1, const NormalTransport &n2) {
-    return n1.ratio > n2.ratio;
+    return n1.priority == n2.priority ? n1.ratio > n2.ratio : n1.priority > n2.priority;
 }
 
 /**
@@ -200,7 +221,7 @@ void WarehouseManagement::resetElements() {
 }
 
 /**
- * Case 3: Function that minimizes the mean time of deliveries in a day.
+ * Scenario 3: Function that minimizes the mean time of deliveries in a day.
  * @return Returns the mean time.
  */
 double WarehouseManagement::optimizeExpressTransports() {

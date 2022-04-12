@@ -2,6 +2,7 @@
 #include <fstream>
 #include <string>
 #include <algorithm>
+#include <iostream>
 
 using namespace std;
 
@@ -248,4 +249,34 @@ bool WarehouseManagement::changeCourierAvailability(const std::string &licensePl
         }
     }
     return false;
+}
+
+/**
+ * Balances the number of deliveries by courier
+ */
+void WarehouseManagement::distributePackages() {
+    sort(normalTransports.begin(), normalTransports.end(), sortNormalTransportByRatio);
+
+    for(auto deliverie : normalTransports) {
+        sort(couriers.begin(), couriers.end(), sortCouriersByNumberPackages);
+        for (auto &courier : couriers) {
+            if (canCarry(courier, deliverie)){
+                courier.addPackage(deliverie);
+                break;
+            }
+        }
+    }
+
+    // This shouldn't be here
+    for(auto courier : couriers){
+        std::cout << courier.getNumDeliveries() << "\n";
+    }
+}
+
+/**
+ * Auxiliary function to use in sort().
+ * @return Returns true if the number of packages assigned to c1 is smaller than c2 and false otherwise.
+ */
+bool WarehouseManagement::sortCouriersByNumberPackages(const Courier &c1, const Courier &c2) {
+    return c1.getNumDeliveries() < c2.getNumDeliveries();
 }

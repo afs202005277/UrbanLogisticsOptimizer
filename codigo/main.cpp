@@ -33,5 +33,16 @@ int main() {
             output << "Optimize profit: " << chrono::duration_cast<chrono::milliseconds>(end - start).count() << "ms" << endl << endl;
         }
     }
+
+    /*
+    string courierInput = "../input/generated/couriers/" + to_string(64) + ".txt";
+    string normalTransportsInput = "../input/generated/normalPackages/" + to_string(16000) + ".txt";
+    string expressTransportsInput = "../input/cenario21_encomendas.txt";
+    WarehouseManagement warehouseManagement(courierInput, normalTransportsInput, expressTransportsInput);
+    output << 8 << " couriers and " << 8 << " normal packages." << endl;
+
+    warehouseManagement.distributePackages();
+    */
+
     return 0;
 }

@@ -155,7 +155,7 @@ void WarehouseManagement::prioritizeUnsignedPackages() {
 }
 
 /**
- * Scenario 2: Function thay maximizes the company profit for a given day. Takes use of knapsack function.
+ * Scenario 2: Function that maximizes the company profit for a given day. Takes use of knapsack function.
  * @return Returns the profit.
  */
 int WarehouseManagement::optimizeProfit() {
@@ -198,7 +198,7 @@ bool WarehouseManagement::sortCouriersByRatio(const Courier &c1, const Courier &
 
 /**
  * Auxiliary function to use in sort().
- * @return Returns true if n1 ratio is higher than n2 and false otherwise.
+ * @return Returns true if n1 priority is higher than n2 or if equal returns true if n1 ratio is higher than n2 and false otherwise.
  */
 bool WarehouseManagement::sortNormalTransportByRatio(const NormalTransport &n1, const NormalTransport &n2) {
     return n1.priority == n2.priority ? n1.ratio > n2.ratio : n1.priority > n2.priority;
@@ -258,10 +258,10 @@ void WarehouseManagement::distributePackages() {
     sort(normalTransports.begin(), normalTransports.end(), sortNormalTransportByRatio);
 
     for(auto deliverie : normalTransports) {
-        sort(couriers.begin(), couriers.end(), sortCouriersByNumberPackages);
         for (auto &courier : couriers) {
             if (canCarry(courier, deliverie)){
                 courier.addPackage(deliverie);
+                sort(couriers.begin(), couriers.end(), sortCouriersByNumberPackages);
                 break;
             }
         }

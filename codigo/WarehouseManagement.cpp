@@ -205,11 +205,13 @@ bool WarehouseManagement::sortNormalTransportByRatio(const NormalTransport &n1, 
 }
 
 /**
- * Resets elements: sets assigned variable to false on all packages and sets current volume and weight to 0 on all couriers.
+ * Resets elements: sets assigned variable to false and removes the priority on all packages and sets current volume and weight to 0 on all couriers.
  */
 void WarehouseManagement::resetElements() {
-    for (auto &package:normalTransports)
+    for (auto &package:normalTransports){
         package.assigned = false;
+        package.priority = 0;
+    }
 
     for (auto &courier:couriers) {
         vector<NormalTransport> tmp;
@@ -257,19 +259,14 @@ bool WarehouseManagement::changeCourierAvailability(const std::string &licensePl
 void WarehouseManagement::distributePackages() {
     sort(normalTransports.begin(), normalTransports.end(), sortNormalTransportByRatio);
 
-    for(auto deliverie : normalTransports) {
+    for(auto deliveries : normalTransports) {
         for (auto &courier : couriers) {
-            if (canCarry(courier, deliverie)){
-                courier.addPackage(deliverie);
+            if (canCarry(courier, deliveries)){
+                courier.addPackage(deliveries);
                 sort(couriers.begin(), couriers.end(), sortCouriersByNumberPackages);
                 break;
             }
         }
-    }
-
-    // This shouldn't be here
-    for(auto courier : couriers){
-        std::cout << courier.getNumDeliveries() << "\n";
     }
 }
 
@@ -279,4 +276,33 @@ void WarehouseManagement::distributePackages() {
  */
 bool WarehouseManagement::sortCouriersByNumberPackages(const Courier &c1, const Courier &c2) {
     return c1.getNumDeliveries() < c2.getNumDeliveries();
+}
+
+unsigned int WarehouseManagement::amountOfCouriersAvailable() {
+    unsigned int c=0;
+    for (const auto& courier:couriers){
+        if (courier.isAvailable())
+            c++;
+    }
+    return c;
+}
+
+unsigned int WarehouseManagement::getUsedCouriers() {
+    unsigned int c=0;
+    for (const auto& courier:couriers){
+        if (courier.getNumDeliveries() != 0)
+            c++;
+    }
+    return c;
+}
+
+std::pair<unsigned int, unsigned int> WarehouseManagement::minAndMaxNumPackagesOfCouriers() {
+    unsigned int max = 0, min = -1;
+    for (const auto& courier:couriers){
+        if (courier.getNumDeliveries() > max)
+            max = courier.getNumDeliveries();
+        if (courier.getNumDeliveries() < min)
+            min = courier.getNumDeliveries();
+    }
+    return {min, max};
 }

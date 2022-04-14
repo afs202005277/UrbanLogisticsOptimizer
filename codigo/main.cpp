@@ -1,48 +1,95 @@
 #include <iostream>
-#include <chrono>
 #include "WarehouseManagement.h"
 #include "NormalPackageGenerator.h"
-#include "CourierGenerator.h"
-#include <fstream>
 using namespace std;
 
+void fileNameReader(string &defaultCourierPath, string &defaultNormalTransports, string &defaultExpressTransports){
+    string tmp;
+    cout << "Insert the name of the couriers file: ";
+    getline(cin, tmp);
+    if (!tmp.empty())
+        defaultCourierPath = "../input/" + tmp;
 
+    cout << endl << "Insert the name of the normal transports file: ";
+    getline(cin, tmp);
+    if (!tmp.empty())
+        defaultNormalTransports = "../input/" + tmp;
+
+    cout << endl << "Insert the name of the express transports file: ";
+    getline(cin, tmp);
+    if (!tmp.empty())
+        defaultExpressTransports = "../input/" + tmp;
+}
+
+void optionChooser(WarehouseManagement &warehouseManagement){
+    int optionInt;
+    cout << "Which algorithm do you want to run?" << endl;
+    cout << "1: optimizeNormalPackagesDistribution: distribute the normal packages using the least amount of couriers" << endl;
+    cout << "2: optimizeProfit: distribute the normal packages so that the profit is maximized" << endl;
+    cout << "3: optimizeExpressTransports: distribute the express packages so that the average time of delivery is minimized" << endl;
+    cout << "4: getOperationEfficiency: returns the quotient between the number of normal packages delivered and the total number of normal packages received" << endl;
+    cout << "5: changeCourierAvailability: the couriers may be unavailable, so this method is used to set the availability (boolean) of a given courier." << endl;
+    cout << "6: distributePackages: distributes the packages that were assigned to the couriers, so that the number of packages assigned to each of the couriers is more balanced." << endl;
+    cout << "Choose an option: ";
+    string option;
+    getline(cin, option);
+    optionInt = stoi(option);
+    cout << endl;
+    string licensePlate, availability;
+    pair<unsigned int, unsigned int> minMax;
+    switch (optionInt) {
+        case 1:
+            cout << "The app used " << warehouseManagement.optimizeNormalPackagesDistribution() << " of the " << warehouseManagement.amountOfCouriersAvailable() << " couriers that were available." << endl;
+            warehouseManagement.resetElements();
+            break;
+        case 2:
+            cout << "The maximum profit was " << warehouseManagement.optimizeProfit() << " using " << warehouseManagement.getUsedCouriers() << " couriers." << endl;
+            warehouseManagement.resetElements();
+            break;
+        case 3:
+            cout << "The average time of delivery was " << warehouseManagement.optimizeExpressTransports() << "." << endl;
+            break;
+        case 4:
+            cout << "The operation efficiency was " << warehouseManagement.getOperationEfficiency() << "." << endl;
+            break;
+        case 5:
+            cout << "What is the license plate of the courier? ";
+            getline(cin, licensePlate);
+            cout << "Is the courier available? (y/n) ";
+            getline(cin, availability);
+            if (toupper(availability[0]) == 'Y')
+                warehouseManagement.changeCourierAvailability(licensePlate, true);
+            else if (toupper(availability[0]) == 'N')
+                warehouseManagement.changeCourierAvailability(licensePlate, false);
+            break;
+        case 6:
+            minMax = warehouseManagement.minAndMaxNumPackagesOfCouriers();
+            cout << "Before calling the function, the courier carrying the smallest number of packages, was carrying " << minMax.first << "." << endl;
+            cout << "The one with the greatest amount of packages, was carrying " << minMax.second << "." << endl;
+            warehouseManagement.distributePackages();
+            minMax = warehouseManagement.minAndMaxNumPackagesOfCouriers();
+            cout << "After calling the function, the minimum is " << minMax.first << "." << endl;
+            cout << "And the maximum is " << minMax.second << "." << endl;
+            break;
+        default:
+            cout << "Option out of bounds!" << endl;
+    }
+}
 
 int main() {
-    /*NormalPackageGenerator normalPackageGenerator("../input/normalTransports.txt", 440);
-    normalPackageGenerator.generate();
-    CourierGenerator courierGenerator("../input/carrinhas.txt", 50);
-    courierGenerator.generate();*/
-    ofstream output("output.txt");
-    /*
-    for (auto numNormal:NormalPackageGenerator::amountNormalPackages){
-        for (auto numCouriers:CourierGenerator::amountCouriers){
-            string courierInput = "../input/generated/couriers/" + to_string(numCouriers) + ".txt";
-            string normalTransportsInput = "../input/generated/normalPackages/" + to_string(numNormal) + ".txt";
-            string expressTransportsInput = "../input/cenario21_encomendas.txt";
-            WarehouseManagement warehouseManagement(courierInput, normalTransportsInput, expressTransportsInput);
-            output << numCouriers << " couriers and " << numNormal << " normal packages." << endl;
+    string defaultCourierPath = "../input/carrinhas.txt";
+    string defaultNormalTransports = "../input/normalTransports.txt";
+    string defaultExpressTransports = "../input/expressTransports.txt";
+    cout << "Welcome to our package management app!" << endl;
+    fileNameReader(defaultCourierPath, defaultNormalTransports, defaultExpressTransports);
+    WarehouseManagement warehouseManagement(defaultCourierPath, defaultNormalTransports, defaultExpressTransports);
 
-            auto start = chrono::steady_clock::now();
-            unsigned int couriersUsed = warehouseManagement.optimizeNormalPackagesDistribution();
-            auto end = chrono::steady_clock::now();
-            output << "Optimize normal transport: " << chrono::duration_cast<chrono::milliseconds>(end - start).count() << "ms" << endl;
-            warehouseManagement.resetElements();
-            start = chrono::steady_clock::now();
-            unsigned int profit = warehouseManagement.optimizeProfit();
-            end = chrono::steady_clock::now();
-            output << "Optimize profit: " << chrono::duration_cast<chrono::milliseconds>(end - start).count() << "ms" << endl << endl;
-        }
-    }
-    */
-
-    string courierInput = "../input/generated/couriers/" + to_string(64) + ".txt";
-    string normalTransportsInput = "../input/generated/normalPackages/" + to_string(16000) + ".txt";
-    string expressTransportsInput = "../input/cenario21_encomendas.txt";
-    WarehouseManagement warehouseManagement(courierInput, normalTransportsInput, expressTransportsInput);
-    output << 8 << " couriers and " << 8 << " normal packages." << endl;
-
-    warehouseManagement.distributePackages();
+    string option;
+    do{
+        optionChooser(warehouseManagement);
+        cout << "Do you want to make more operations? (y/n) ";
+        getline(cin, option);
+    } while(toupper(option[0]) == 'Y');
 
     return 0;
 }

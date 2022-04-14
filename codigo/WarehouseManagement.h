@@ -20,16 +20,15 @@ private:
     static bool sortCouriersByNumberPackages(const Courier &c1, const Courier &c2);
     static bool sortNormalTransportByRatio(const NormalTransport &n1, const NormalTransport &n2);
     static bool sortNormalTransportByPriority(const NormalTransport &n1, const NormalTransport &n2);
+    static bool canCarry(const Courier& courier, NormalTransport package);
+    unsigned int knapsack(Courier &courier);
+    void prioritizeUnsignedPackages();
 
 public:
     WarehouseManagement(const std::string &couriersData, const std::string &normalTransportsData,
                         const std::string &expressTransportsData);
 
     unsigned int optimizeNormalPackagesDistribution();
-
-    unsigned int knapsack(Courier &courier);
-
-    static bool canCarry(const Courier& courier, NormalTransport package);
 
     int optimizeProfit();
 
@@ -41,9 +40,13 @@ public:
 
     bool changeCourierAvailability(const std::string &licensePlate, bool available);
 
-    void prioritizeUnsignedPackages();
-
     void distributePackages();
+
+    unsigned int amountOfCouriersAvailable();
+
+    unsigned int getUsedCouriers();
+
+    std::pair<unsigned int, unsigned int> minAndMaxNumPackagesOfCouriers();
 };
 
 

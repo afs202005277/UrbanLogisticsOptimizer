@@ -157,3 +157,9 @@ void Courier::setAvailable(bool available) {
 const string &Courier::getLicensePlate() const {
     return licensePlate;
 }
+
+void Courier::eraseDeliveries() {
+    this->deliveries.clear();
+}
+
+

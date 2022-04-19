@@ -31,7 +31,7 @@ void optionChooser(WarehouseManagement &warehouseManagement){
     cout << "5: changeCourierAvailability: the couriers may be unavailable, so this method is used to set the availability (boolean) of a given courier." << endl;
     cout << "6: distributePackages: distributes the packages that were assigned to the couriers, so that the number of packages assigned to each of the couriers is more balanced." << endl;
     cout << "7: addNormalTransportPackages: adds new normal transport packages to be delivered." << endl;
-    //cout << "8: endOfBusiness: Mark the end of the working day";
+    cout << "8: endOfBusiness: Mark the end of the working day";
     cout << "Choose an option: ";
     string option;
     getline(cin, option);
@@ -42,11 +42,9 @@ void optionChooser(WarehouseManagement &warehouseManagement){
     switch (optionInt) {
         case 1:
             cout << "The app used " << warehouseManagement.optimizeNormalPackagesDistribution() << " of the " << warehouseManagement.amountOfCouriersAvailable() << " couriers that were available." << endl;
-            warehouseManagement.resetElements();
             break;
         case 2:
             cout << "The maximum profit was " << warehouseManagement.optimizeProfit() << " using " << warehouseManagement.getUsedCouriers() << " couriers." << endl;
-            warehouseManagement.resetElements();
             break;
         case 3:
             cout << "The average time of delivery was " << warehouseManagement.optimizeExpressTransports() << "." << endl;
@@ -84,10 +82,10 @@ void optionChooser(WarehouseManagement &warehouseManagement){
             else
                 cout << "The selected file doesn't exist." << endl;
             break;
-        /*case 8:
+        case 8:
             warehouseManagement.endOfBusiness();
             cout << warehouseManagement.numNormalTransportPackages() << " to be delivered." << endl;
-        */
+            break;
         default:
             cout << "Option out of bounds!" << endl;
     }

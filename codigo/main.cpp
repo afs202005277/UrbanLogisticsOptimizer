@@ -76,9 +76,9 @@ void optionChooser(WarehouseManagement &warehouseManagement){
             getline(cin, fileName);
             if (!fileName.empty())
                 fileName = "../input/" + fileName;
-            cout << "Before calling the function, the number of normal transport packages to be delivered is " << warehouseManagement.numNormalTransportPackages() << "." << endl;
+            cout << "Before calling the function, the number of normal transport packages to be delivered was " << warehouseManagement.numNormalTransportPackages() << "." << endl;
             if(warehouseManagement.addNormalTransportPackages(fileName))
-                cout << "After calling the function, the number of packages is " << warehouseManagement.numNormalTransportPackages() << "." << endl;
+                cout << "After calling the function, the number of packages will be " << warehouseManagement.numNormalTransportPackages() << "." << endl;
             else
                 cout << "The selected file doesn't exist." << endl;
             break;
@@ -107,4 +107,6 @@ int main() {
     } while(toupper(option[0]) == 'Y');
 
     return 0;
+
+
 }

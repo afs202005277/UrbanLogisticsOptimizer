@@ -52,7 +52,7 @@ public:
 
     bool addNormalTransportPackages(const std::string &input);
 
-    //void endOfBusiness();
+    void endOfBusiness();
 };
 
 

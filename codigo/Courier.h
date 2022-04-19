@@ -32,6 +32,8 @@ public:
 
     unsigned int getPesoAtual() const;
 
+    void eraseDeliveries();
+
     void addPackage(NormalTransport package);
 
     void removePackage(NormalTransport package);

@@ -82,6 +82,7 @@ std::vector<ExpressTransport> WarehouseManagement::readExpressTransportsData(con
  * @return Number of used Couriers
  */
 unsigned int WarehouseManagement::optimizeNormalPackagesDistribution() {
+    resetElements();
     sort(couriers.begin(), couriers.end(), greater<>());
     sort(normalTransports.begin(), normalTransports.end(), sortNormalTransportByPriority);
     unsigned int courierIdx = 0, usedCouriers = 0;
@@ -93,7 +94,7 @@ unsigned int WarehouseManagement::optimizeNormalPackagesDistribution() {
         }
         courierIdx++;
     }
-    prioritizeUnsignedPackages();
+
     return usedCouriers;
 }
 
@@ -159,6 +160,7 @@ void WarehouseManagement::prioritizeUnsignedPackages() {
  * @return Returns the profit.
  */
 int WarehouseManagement::optimizeProfit() {
+    resetElements();
     sort(couriers.begin(), couriers.end(), sortCouriersByRatio);
     sort(normalTransports.begin(), normalTransports.end(), sortNormalTransportByRatio);
 
@@ -175,7 +177,7 @@ int WarehouseManagement::optimizeProfit() {
     for (auto &package:normalTransports){
         revenue += package.payment;
     }
-    prioritizeUnsignedPackages();
+
     return (int) (revenue - expenses);
 }
 
@@ -210,7 +212,6 @@ bool WarehouseManagement::sortNormalTransportByRatio(const NormalTransport &n1, 
 void WarehouseManagement::resetElements() {
     for (auto &package:normalTransports){
         package.assigned = false;
-        package.priority = 0;
     }
 
     for (auto &courier:couriers) {
@@ -257,12 +258,13 @@ bool WarehouseManagement::changeCourierAvailability(const std::string &licensePl
  * Balances the number of deliveries by courier
  */
 void WarehouseManagement::distributePackages() {
-    sort(normalTransports.begin(), normalTransports.end(), sortNormalTransportByRatio);
+    resetElements();
+    sort(normalTransports.begin(), normalTransports.end(), sortNormalTransportByPriority);
 
-    for(auto deliveries : normalTransports) {
+    for(auto &deliveries: normalTransports) {
         for (auto &courier : couriers) {
             if (canCarry(courier, deliveries)){
-                courier.addPackage(deliveries);
+                courier.addPackage(deliveries); deliveries.assigned = true;
                 sort(couriers.begin(), couriers.end(), sortCouriersByNumberPackages);
                 break;
             }
@@ -315,23 +317,26 @@ std::pair<unsigned int, unsigned int> WarehouseManagement::minAndMaxNumPackagesO
 bool WarehouseManagement::addNormalTransportPackages(const std::string &input) {
     std::vector<NormalTransport> newPackages = readNormalTransportsData(input);
     if(newPackages.empty())
-        return 0;
+        return false;
 
     normalTransports.insert(normalTransports.end(), newPackages.begin(), newPackages.end());
 
-    return 1;
+    return true;
 }
 
 int WarehouseManagement::numNormalTransportPackages() {
     return normalTransports.size();
 }
-/*
+
 void WarehouseManagement::endOfBusiness() {
-    std::remove_if(normalTransports.begin(), normalTransports.end(),
-                   [](NormalTransport& transport)
-                   {
-                       return transport.assigned;
-                   }
-    );
+    for (auto &courier : couriers){
+        courier.eraseDeliveries();
+    }
+
+    prioritizeUnsignedPackages();
+
+    normalTransports.erase(std::remove_if(normalTransports.begin(),
+                              normalTransports.end(),
+                              [](NormalTransport package){return package.assigned;}),
+                           normalTransports.end());
 }
-*/

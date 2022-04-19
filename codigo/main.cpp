@@ -30,12 +30,14 @@ void optionChooser(WarehouseManagement &warehouseManagement){
     cout << "4: getOperationEfficiency: returns the quotient between the number of normal packages delivered and the total number of normal packages received" << endl;
     cout << "5: changeCourierAvailability: the couriers may be unavailable, so this method is used to set the availability (boolean) of a given courier." << endl;
     cout << "6: distributePackages: distributes the packages that were assigned to the couriers, so that the number of packages assigned to each of the couriers is more balanced." << endl;
+    cout << "7: addNormalTransportPackages: adds new normal transport packages to be delivered." << endl;
+    //cout << "8: endOfBusiness: Mark the end of the working day";
     cout << "Choose an option: ";
     string option;
     getline(cin, option);
     optionInt = stoi(option);
     cout << endl;
-    string licensePlate, availability;
+    string licensePlate, availability, fileName;
     pair<unsigned int, unsigned int> minMax;
     switch (optionInt) {
         case 1:
@@ -71,6 +73,21 @@ void optionChooser(WarehouseManagement &warehouseManagement){
             cout << "After calling the function, the minimum is " << minMax.first << "." << endl;
             cout << "And the maximum is " << minMax.second << "." << endl;
             break;
+        case 7:
+            cout << endl << "Insert the name of the normal transports file: ";
+            getline(cin, fileName);
+            if (!fileName.empty())
+                fileName = "../input/" + fileName;
+            cout << "Before calling the function, the number of normal transport packages to be delivered is " << warehouseManagement.numNormalTransportPackages() << "." << endl;
+            if(warehouseManagement.addNormalTransportPackages(fileName))
+                cout << "After calling the function, the number of packages is " << warehouseManagement.numNormalTransportPackages() << "." << endl;
+            else
+                cout << "The selected file doesn't exist." << endl;
+            break;
+        /*case 8:
+            warehouseManagement.endOfBusiness();
+            cout << warehouseManagement.numNormalTransportPackages() << " to be delivered." << endl;
+        */
         default:
             cout << "Option out of bounds!" << endl;
     }

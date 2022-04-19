@@ -4,7 +4,7 @@
 
 using namespace std;
 
-vector<unsigned int> NormalPackageGenerator::amountNormalPackages = {8, 64, 1000, 16000, 32000, 64000, 128000, 256000, 512000, 1000000, 2000000};
+vector<unsigned int> NormalPackageGenerator::amountNormalPackages = {10, 100, 500, 1000, 5000, 10000, 50000, 100000, 500000, 1000000, 5000000};
 
 NormalPackageGenerator::NormalPackageGenerator(const std::string &sampleFile, unsigned int numPackages) {
     amountNormalPackages_Sample = numPackages;

@@ -47,6 +47,12 @@ public:
     unsigned int getUsedCouriers();
 
     std::pair<unsigned int, unsigned int> minAndMaxNumPackagesOfCouriers();
+
+    int numNormalTransportPackages();
+
+    bool addNormalTransportPackages(const std::string &input);
+
+    //void endOfBusiness();
 };
 
 

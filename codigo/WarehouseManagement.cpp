@@ -117,12 +117,12 @@ unsigned int WarehouseManagement::knapsack(Courier &courier) {
     unsigned int max = 0;
     if (courier.getPesoAtual() + minimumWeight >= courier.getPesoMax() || courier.getVolAtual() + minimumVolume >= courier.getVolMax())
         return courier.getNumDeliveries();
-    for (NormalTransport &package:normalTransports){
-        if (canCarry(courier, package) && !package.assigned){
+    for (NormalTransport &package:normalTransports) {
+        if (canCarry(courier, package) && !package.assigned) {
             package.assigned = true;
             courier.addPackage(package);
             unsigned int current = knapsack(courier);
-            if (current > max){
+            if (current > max) {
                 max = current;
             } else {
                 package.assigned = false;
@@ -306,3 +306,32 @@ std::pair<unsigned int, unsigned int> WarehouseManagement::minAndMaxNumPackagesO
     }
     return {min, max};
 }
+
+/**
+ * Adds new packages to the normalTransport vector.
+ * @param input The name of the normal transport file.
+ * @return Returns true if successful and false otherwise.
+ */
+bool WarehouseManagement::addNormalTransportPackages(const std::string &input) {
+    std::vector<NormalTransport> newPackages = readNormalTransportsData(input);
+    if(newPackages.empty())
+        return 0;
+
+    normalTransports.insert(normalTransports.end(), newPackages.begin(), newPackages.end());
+
+    return 1;
+}
+
+int WarehouseManagement::numNormalTransportPackages() {
+    return normalTransports.size();
+}
+/*
+void WarehouseManagement::endOfBusiness() {
+    std::remove_if(normalTransports.begin(), normalTransports.end(),
+                   [](NormalTransport& transport)
+                   {
+                       return transport.assigned;
+                   }
+    );
+}
+*/

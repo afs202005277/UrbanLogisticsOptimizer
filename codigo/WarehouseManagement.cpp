@@ -116,12 +116,12 @@ unsigned int WarehouseManagement::knapsack(Courier &courier) {
     unsigned int max = 0;
     if (courier.getPesoAtual() + minimumWeight >= courier.getPesoMax() || courier.getVolAtual() + minimumVolume >= courier.getVolMax())
         return courier.getNumDeliveries();
-    for (NormalTransport &package:normalTransports){
-        if (canCarry(courier, package) && !package.assigned){
+    for (NormalTransport &package:normalTransports) {
+        if (canCarry(courier, package) && !package.assigned) {
             package.assigned = true;
             courier.addPackage(package);
             unsigned int current = knapsack(courier);
-            if (current > max){
+            if (current > max) {
                 max = current;
             } else {
                 package.assigned = false;

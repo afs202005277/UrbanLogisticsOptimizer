@@ -13,7 +13,7 @@ int main() {
     normalPackageGenerator.generate();
     CourierGenerator courierGenerator("../input/carrinhas.txt", 50);
     courierGenerator.generate();*/
-    ofstream output("output.txt");
+    /*ofstream output("output.txt");
     for (auto numNormal:NormalPackageGenerator::amountNormalPackages){
         for (auto numCouriers:CourierGenerator::amountCouriers){
             string courierInput = "../input/generated/couriers/" + to_string(numCouriers) + ".txt";
@@ -32,6 +32,12 @@ int main() {
             end = chrono::steady_clock::now();
             output << "Optimize profit: " << chrono::duration_cast<chrono::milliseconds>(end - start).count() << "ms" << endl << endl;
         }
-    }
+    }*/
+
+    string courierInput = "../input/carrinhas.txt";
+    string normalTransportsInput = "../input/normalTransports.txt";
+    string expressTransportsInput = "../input/expressTransports.txt";
+    WarehouseManagement warehouseManagement(courierInput, normalTransportsInput, expressTransportsInput);
+    cout << "Profit: " << warehouseManagement.optimizeProfit() << endl;
     return 0;
 }

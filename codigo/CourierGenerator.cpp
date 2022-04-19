@@ -3,7 +3,7 @@
 #include <unordered_set>
 using namespace std;
 
-vector<unsigned int> CourierGenerator::amountCouriers = {8, 64, 1000, 16000, 32000, 64000, 128000, 256000};
+vector<unsigned int> CourierGenerator::amountCouriers = {10, 100, 500, 1000, 5000, 10000, 50000, 100000, 500000, 1000000, 5000000};
 
 CourierGenerator::CourierGenerator(const std::string &sampleFile, unsigned int numCouriers) {
     amountCouriers_Sample = numCouriers;

@@ -2,6 +2,7 @@
 #include <fstream>
 #include <string>
 #include <algorithm>
+#include <iostream>
 
 using namespace std;
 
@@ -154,7 +155,7 @@ void WarehouseManagement::prioritizeUnsignedPackages() {
 }
 
 /**
- * Scenario 2: Function thay maximizes the company profit for a given day. Takes use of knapsack function.
+ * Scenario 2: Function that maximizes the company profit for a given day. Takes use of knapsack function.
  * @return Returns the profit.
  */
 int WarehouseManagement::optimizeProfit() {
@@ -197,18 +198,20 @@ bool WarehouseManagement::sortCouriersByRatio(const Courier &c1, const Courier &
 
 /**
  * Auxiliary function to use in sort().
- * @return Returns true if n1 ratio is higher than n2 and false otherwise.
+ * @return Returns true if n1 priority is higher than n2 or if equal returns true if n1 ratio is higher than n2 and false otherwise.
  */
 bool WarehouseManagement::sortNormalTransportByRatio(const NormalTransport &n1, const NormalTransport &n2) {
     return n1.priority == n2.priority ? n1.ratio > n2.ratio : n1.priority > n2.priority;
 }
 
 /**
- * Resets elements: sets assigned variable to false on all packages and sets current volume and weight to 0 on all couriers.
+ * Resets elements: sets assigned variable to false and removes the priority on all packages and sets current volume and weight to 0 on all couriers.
  */
 void WarehouseManagement::resetElements() {
-    for (auto &package:normalTransports)
+    for (auto &package:normalTransports){
         package.assigned = false;
+        package.priority = 0;
+    }
 
     for (auto &courier:couriers) {
         vector<NormalTransport> tmp;
@@ -249,3 +252,86 @@ bool WarehouseManagement::changeCourierAvailability(const std::string &licensePl
     }
     return false;
 }
+
+/**
+ * Balances the number of deliveries by courier
+ */
+void WarehouseManagement::distributePackages() {
+    sort(normalTransports.begin(), normalTransports.end(), sortNormalTransportByRatio);
+
+    for(auto deliveries : normalTransports) {
+        for (auto &courier : couriers) {
+            if (canCarry(courier, deliveries)){
+                courier.addPackage(deliveries);
+                sort(couriers.begin(), couriers.end(), sortCouriersByNumberPackages);
+                break;
+            }
+        }
+    }
+}
+
+/**
+ * Auxiliary function to use in sort().
+ * @return Returns true if the number of packages assigned to c1 is smaller than c2 and false otherwise.
+ */
+bool WarehouseManagement::sortCouriersByNumberPackages(const Courier &c1, const Courier &c2) {
+    return c1.getNumDeliveries() < c2.getNumDeliveries();
+}
+
+unsigned int WarehouseManagement::amountOfCouriersAvailable() {
+    unsigned int c=0;
+    for (const auto& courier:couriers){
+        if (courier.isAvailable())
+            c++;
+    }
+    return c;
+}
+
+unsigned int WarehouseManagement::getUsedCouriers() {
+    unsigned int c=0;
+    for (const auto& courier:couriers){
+        if (courier.getNumDeliveries() != 0)
+            c++;
+    }
+    return c;
+}
+
+std::pair<unsigned int, unsigned int> WarehouseManagement::minAndMaxNumPackagesOfCouriers() {
+    unsigned int max = 0, min = -1;
+    for (const auto& courier:couriers){
+        if (courier.getNumDeliveries() > max)
+            max = courier.getNumDeliveries();
+        if (courier.getNumDeliveries() < min)
+            min = courier.getNumDeliveries();
+    }
+    return {min, max};
+}
+
+/**
+ * Adds new packages to the normalTransport vector.
+ * @param input The name of the normal transport file.
+ * @return Returns true if successful and false otherwise.
+ */
+bool WarehouseManagement::addNormalTransportPackages(const std::string &input) {
+    std::vector<NormalTransport> newPackages = readNormalTransportsData(input);
+    if(newPackages.empty())
+        return 0;
+
+    normalTransports.insert(normalTransports.end(), newPackages.begin(), newPackages.end());
+
+    return 1;
+}
+
+int WarehouseManagement::numNormalTransportPackages() {
+    return normalTransports.size();
+}
+/*
+void WarehouseManagement::endOfBusiness() {
+    std::remove_if(normalTransports.begin(), normalTransports.end(),
+                   [](NormalTransport& transport)
+                   {
+                       return transport.assigned;
+                   }
+    );
+}
+*/

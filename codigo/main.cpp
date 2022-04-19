@@ -31,7 +31,7 @@ void optionChooser(WarehouseManagement &warehouseManagement){
     cout << "5: changeCourierAvailability: the couriers may be unavailable, so this method is used to set the availability (boolean) of a given courier." << endl;
     cout << "6: distributePackages: distributes the packages that were assigned to the couriers, so that the number of packages assigned to each of the couriers is more balanced." << endl;
     cout << "7: addNormalTransportPackages: adds new normal transport packages to be delivered." << endl;
-    cout << "8: endOfBusiness: Mark the end of the working day";
+    cout << "8: endOfBusiness: Mark the end of the working day" << endl;
     cout << "Choose an option: ";
     string option;
     getline(cin, option);
@@ -72,13 +72,13 @@ void optionChooser(WarehouseManagement &warehouseManagement){
             cout << "And the maximum is " << minMax.second << "." << endl;
             break;
         case 7:
-            cout << endl << "Insert the name of the normal transports file: ";
+            cout << "Insert the name of the normal transports file: ";
             getline(cin, fileName);
             if (!fileName.empty())
                 fileName = "../input/" + fileName;
-            cout << "Before calling the function, the number of normal transport packages to be delivered is " << warehouseManagement.numNormalTransportPackages() << "." << endl;
+            cout << "Before calling the function, the number of normal transport packages to be delivered was " << warehouseManagement.numNormalTransportPackages() << "." << endl;
             if(warehouseManagement.addNormalTransportPackages(fileName))
-                cout << "After calling the function, the number of packages is " << warehouseManagement.numNormalTransportPackages() << "." << endl;
+                cout << "After calling the function, the number of packages will be " << warehouseManagement.numNormalTransportPackages() << "." << endl;
             else
                 cout << "The selected file doesn't exist." << endl;
             break;
@@ -107,4 +107,6 @@ int main() {
     } while(toupper(option[0]) == 'Y');
 
     return 0;
+
+
 }

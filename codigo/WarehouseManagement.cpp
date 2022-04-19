@@ -264,6 +264,7 @@ void WarehouseManagement::distributePackages() {
     for(auto &deliveries: normalTransports) {
         for (auto &courier : couriers) {
             if (canCarry(courier, deliveries)){
+                notAssignedNormalPackages--;
                 courier.addPackage(deliveries); deliveries.assigned = true;
                 sort(couriers.begin(), couriers.end(), sortCouriersByNumberPackages);
                 break;

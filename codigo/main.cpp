@@ -38,6 +38,7 @@ void optionChooser(WarehouseManagement &warehouseManagement){
     optionInt = stoi(option);
     cout << endl;
     string licensePlate, availability, fileName;
+    bool courierExists = true;
     pair<unsigned int, unsigned int> minMax;
     switch (optionInt) {
         case 1:
@@ -57,10 +58,15 @@ void optionChooser(WarehouseManagement &warehouseManagement){
             getline(cin, licensePlate);
             cout << "Is the courier available? (y/n) ";
             getline(cin, availability);
-            if (toupper(availability[0]) == 'Y')
-                warehouseManagement.changeCourierAvailability(licensePlate, true);
-            else if (toupper(availability[0]) == 'N')
-                warehouseManagement.changeCourierAvailability(licensePlate, false);
+            if (toupper(availability[0]) == 'Y') {
+                courierExists = warehouseManagement.changeCourierAvailability(licensePlate, true);
+            }
+            else if (toupper(availability[0]) == 'N') {
+                courierExists = warehouseManagement.changeCourierAvailability(licensePlate, false);
+            }
+            if (!courierExists){
+                cout << "The courier with license plate " << licensePlate << " does not exist. Remember that license plates are in the format LLDDLL, where L is a uppercase letter and D is a digit." << endl;
+            }
             break;
         case 6:
             minMax = warehouseManagement.minAndMaxNumPackagesOfCouriers();

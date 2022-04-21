@@ -6,7 +6,6 @@ struct NormalTransport{
     unsigned int volume;
     unsigned int payment;
     bool assigned;
-    unsigned int combinedStorage;
     double ratio;
     unsigned int priority;
 
@@ -15,7 +14,6 @@ struct NormalTransport{
                volume == rhs.volume &&
                payment == rhs.payment &&
                assigned == rhs.assigned &&
-               combinedStorage == rhs.combinedStorage &&
                ratio == rhs.ratio;
     }
 };

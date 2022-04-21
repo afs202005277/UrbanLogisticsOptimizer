@@ -13,6 +13,9 @@ public:
 
     static std::vector<unsigned int> amountNormalPackages;
 
+    /**
+    * Uses a sample file of Normal Packages to generate a specified amount of Packages (specified by the vector amountNormalPackages) and save them into files (saved in ../input/generated/normalPackages/)
+    */
     void generate();
 };
 

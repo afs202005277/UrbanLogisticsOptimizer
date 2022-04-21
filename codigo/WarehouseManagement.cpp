@@ -6,6 +6,7 @@
 
 using namespace std;
 
+const unsigned int maxTimeWindow = 8 * 3600; // 8 hours converted into seconds
 
 WarehouseManagement::WarehouseManagement(const std::string &couriersData, const std::string &normalTransportsData,
                                          const std::string &expressTransportsData) {
@@ -177,7 +178,10 @@ double WarehouseManagement::optimizeExpressTransports() {
     sort(expressTransports.begin(), expressTransports.end());
     unsigned int sum=0, total=0;
     for (auto i:expressTransports){
+        if (sum + i.timeToDelivery > maxTimeWindow)
+            break;
         sum += i.timeToDelivery;
+
         total += sum;
     }
     return total / (double) expressTransports.size();

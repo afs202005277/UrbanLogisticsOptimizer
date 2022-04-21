@@ -107,6 +107,7 @@ public:
 
     /**
     * Scenario 3: Function that minimizes the mean time of deliveries in a day.
+    * Takes into consideration the time window of 8 hours to make the deliveries.
     * @return Returns the mean time.
     */
     double optimizeExpressTransports();

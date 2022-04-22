@@ -29,6 +29,8 @@ vector<Courier> WarehouseManagement::readCourierData(const string &couriersData)
         res.emplace_back(Courier(plate, volMax, pesoMax, custo));
     }
     input.close();
+    if (res[res.size()-1].getLicensePlate().empty())
+        res.pop_back();
     return res;
 }
 
@@ -47,6 +49,8 @@ std::vector<NormalTransport> WarehouseManagement::readNormalTransportsData(const
             minimumVolume = volume;
     }
     data.close();
+    if (res[res.size()-1] == res[res.size() - 2])
+        res.pop_back();
     return res;
 }
 
@@ -59,9 +63,11 @@ std::vector<ExpressTransport> WarehouseManagement::readExpressTransportsData(con
     while(!data.eof()){
         unsigned int volume, peso, recompensa, tempo;
         data >> volume >> peso >> recompensa >> tempo;
-        res.emplace_back(ExpressTransport{peso, volume, recompensa, tempo});
+        res.emplace_back(ExpressTransport{peso, volume, recompensa, tempo, 0});
     }
     data.close();
+    if (res[res.size()-1] == res[res.size() - 2])
+        res.pop_back();
     return res;
 }
 
@@ -92,7 +98,7 @@ unsigned int WarehouseManagement::courierFiller(Courier &courier) {
         return 0;
     }
     unsigned int max = 0;
-    if (courier.getPesoAtual() + minimumWeight >= courier.getPesoMax() || courier.getVolAtual() + minimumVolume >= courier.getVolMax())
+    if (courier.getPesoAtual() + minimumWeight > courier.getPesoMax() || courier.getVolAtual() + minimumVolume > courier.getVolMax())
         return courier.getNumDeliveries();
     for (NormalTransport &package:normalTransports) {
         if (canCarry(courier, package) && !package.assigned) {
@@ -120,6 +126,10 @@ void WarehouseManagement::prioritizeUnsignedPackages() {
         if (!a.assigned) {
             a.priority++;
         }
+    }
+    for (ExpressTransport &e:expressTransports){
+        if (!e.assigned)
+            e.priority++;
     }
 }
 
@@ -174,17 +184,20 @@ void WarehouseManagement::resetElements() {
     notAssignedNormalPackages = normalTransports.size();
 }
 
-double WarehouseManagement::optimizeExpressTransports() {
-    sort(expressTransports.begin(), expressTransports.end());
-    unsigned int sum=0, total=0;
-    for (auto i:expressTransports){
-        if (sum + i.timeToDelivery > maxTimeWindow)
+std::pair<double, unsigned int> WarehouseManagement::optimizeExpressTransports() {
+    sort(expressTransports.begin(), expressTransports.end(), sortExpressTransports);
+    unsigned int sum=0, total=0, numDelivered=0;
+    for (auto &package:expressTransports){
+        if (sum + package.timeToDelivery > maxTimeWindow)
             break;
-        sum += i.timeToDelivery;
-
+        if (package.assigned)
+            continue;
+        sum += package.timeToDelivery;
+        package.assigned = true;
         total += sum;
+        numDelivered++;
     }
-    return total / (double) expressTransports.size();
+    return {total / (double) expressTransports.size(), numDelivered};
 }
 
 
@@ -260,8 +273,8 @@ bool WarehouseManagement::addNormalTransportPackages(const std::string &input) {
     return true;
 }
 
-unsigned int WarehouseManagement::numNormalTransportPackages() {
-    return normalTransports.size();
+std::pair<unsigned int, unsigned int> WarehouseManagement::numPackages() {
+    return {normalTransports.size(), expressTransports.size()};
 }
 
 void WarehouseManagement::endOfBusiness() {
@@ -275,4 +288,16 @@ void WarehouseManagement::endOfBusiness() {
                               normalTransports.end(),
                               [](NormalTransport package){return package.assigned;}),
                            normalTransports.end());
+    expressTransports.erase(std::remove_if(expressTransports.begin(),
+                                          expressTransports.end(),
+                                          [](ExpressTransport package){return package.assigned;}),
+                           expressTransports.end());
+}
+
+bool WarehouseManagement::sortExpressTransports(const ExpressTransport &e1, const ExpressTransport &e2) {
+    if (e1.priority > e2.priority)
+        return true;
+    if (e1.priority == e2.priority && e1.timeToDelivery < e2.timeToDelivery)
+        return true;
+    return false;
 }

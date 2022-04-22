@@ -2,5 +2,5 @@ var searchData=
 [
   ['normalpackagegenerator_0',['NormalPackageGenerator',['../class_normal_package_generator.html',1,'']]],
   ['normaltransport_1',['NormalTransport',['../struct_normal_transport.html',1,'']]],
-  ['numnormaltransportpackages_2',['numNormalTransportPackages',['../class_warehouse_management.html#a36155d8ba12fa822b3385ec84dd76312',1,'WarehouseManagement']]]
+  ['numpackages_2',['numPackages',['../class_warehouse_management.html#ab6c7479ba19222405e44044279a5bded',1,'WarehouseManagement']]]
 ];

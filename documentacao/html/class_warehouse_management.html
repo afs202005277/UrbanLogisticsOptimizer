@@ -98,8 +98,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a28c6558f11337360666b0d48b6736fcd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aab5a560734aaca25eb00681a6f8b98ac"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_warehouse_management.html#aab5a560734aaca25eb00681a6f8b98ac">optimizeProfit</a> ()</td></tr>
 <tr class="separator:aab5a560734aaca25eb00681a6f8b98ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0839298dd11986f14a7a3cb73a90431b"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_warehouse_management.html#a0839298dd11986f14a7a3cb73a90431b">optimizeExpressTransports</a> ()</td></tr>
-<tr class="separator:a0839298dd11986f14a7a3cb73a90431b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a11f297a1e28b286f91d72b0a712e5dd5"><td class="memItemLeft" align="right" valign="top">std::pair&lt; double, unsigned int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_warehouse_management.html#a11f297a1e28b286f91d72b0a712e5dd5">optimizeExpressTransports</a> ()</td></tr>
+<tr class="separator:a11f297a1e28b286f91d72b0a712e5dd5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a613ab2e0d96de318f3cc30f9f0309440"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_warehouse_management.html#a613ab2e0d96de318f3cc30f9f0309440">getOperationEfficiency</a> ()</td></tr>
 <tr class="separator:a613ab2e0d96de318f3cc30f9f0309440"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a96e54696f57f48b68731e0800cf6484e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_warehouse_management.html#a96e54696f57f48b68731e0800cf6484e">changeCourierAvailability</a> (const std::string &amp;licensePlate, bool available)</td></tr>
@@ -112,8 +112,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:aafba64dd4c2d7fbc771ab7fbd9d8b93c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aba007c2a08b58b90d3251a5a2710982a"><td class="memItemLeft" align="right" valign="top">std::pair&lt; unsigned int, unsigned int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_warehouse_management.html#aba007c2a08b58b90d3251a5a2710982a">minAndMaxNumPackagesOfCouriers</a> ()</td></tr>
 <tr class="separator:aba007c2a08b58b90d3251a5a2710982a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a36155d8ba12fa822b3385ec84dd76312"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_warehouse_management.html#a36155d8ba12fa822b3385ec84dd76312">numNormalTransportPackages</a> ()</td></tr>
-<tr class="separator:a36155d8ba12fa822b3385ec84dd76312"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab6c7479ba19222405e44044279a5bded"><td class="memItemLeft" align="right" valign="top">std::pair&lt; unsigned int, unsigned int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_warehouse_management.html#ab6c7479ba19222405e44044279a5bded">numPackages</a> ()</td></tr>
+<tr class="separator:ab6c7479ba19222405e44044279a5bded"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aef46dbcc2ce2f97cd619d2b0f8e67f73"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_warehouse_management.html#aef46dbcc2ce2f97cd619d2b0f8e67f73">addNormalTransportPackages</a> (const std::string &amp;input)</td></tr>
 <tr class="separator:aef46dbcc2ce2f97cd619d2b0f8e67f73"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa885d63d98d34c54380e5b73de78f880"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_warehouse_management.html#aa885d63d98d34c54380e5b73de78f880">endOfBusiness</a> ()</td></tr>
@@ -289,39 +289,39 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a36155d8ba12fa822b3385ec84dd76312" name="a36155d8ba12fa822b3385ec84dd76312"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a36155d8ba12fa822b3385ec84dd76312">&#9670;&nbsp;</a></span>numNormalTransportPackages()</h2>
+<a id="ab6c7479ba19222405e44044279a5bded" name="ab6c7479ba19222405e44044279a5bded"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab6c7479ba19222405e44044279a5bded">&#9670;&nbsp;</a></span>numPackages()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">unsigned int WarehouseManagement::numNormalTransportPackages </td>
+          <td class="memname">std::pair&lt; unsigned int, unsigned int &gt; WarehouseManagement::numPackages </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
-<p >Returns the number of existing normal packages. </p><dl class="section return"><dt>Returns</dt><dd>amount of existing normal packages. </dd></dl>
+<p >Returns a pair with the number of existing normal (first value) and express (second value) packages. </p><dl class="section return"><dt>Returns</dt><dd>pair with the number of existing normal (first value) and express (second value) packages. </dd></dl>
 
 </div>
 </div>
-<a id="a0839298dd11986f14a7a3cb73a90431b" name="a0839298dd11986f14a7a3cb73a90431b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0839298dd11986f14a7a3cb73a90431b">&#9670;&nbsp;</a></span>optimizeExpressTransports()</h2>
+<a id="a11f297a1e28b286f91d72b0a712e5dd5" name="a11f297a1e28b286f91d72b0a712e5dd5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a11f297a1e28b286f91d72b0a712e5dd5">&#9670;&nbsp;</a></span>optimizeExpressTransports()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">double WarehouseManagement::optimizeExpressTransports </td>
+          <td class="memname">std::pair&lt; double, unsigned int &gt; WarehouseManagement::optimizeExpressTransports </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
-<p >Scenario 3: Function that minimizes the mean time of deliveries in a day. Takes into consideration the time window of 8 hours to make the deliveries. </p><dl class="section return"><dt>Returns</dt><dd>Returns the mean time. </dd></dl>
+<p >Scenario 3: Function that minimizes the mean time of deliveries in a day. Takes into consideration the time window of 8 hours to make the deliveries. </p><dl class="section return"><dt>Returns</dt><dd>Returns a pair with the average time and the number of packages delivered. </dd></dl>
 
 </div>
 </div>

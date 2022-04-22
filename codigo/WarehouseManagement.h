@@ -59,6 +59,12 @@ private:
     static bool sortNormalTransportByPriority(const NormalTransport &n1, const NormalTransport &n2);
 
     /**
+     * Auxiliary function to use when sorting Express Transports by priority and by time taken to delivery.
+     * @return Returns true if e1 priority is higher than e2 or, if equal, returns true if e1 time to delivery is less than e2 time to delivery and false otherwise.
+     */
+    static bool sortExpressTransports(const ExpressTransport &e1, const ExpressTransport &e2);
+
+    /**
     * Checks if a given courier can carry a given package.
     * @param courier
     * @param package
@@ -108,9 +114,9 @@ public:
     /**
     * Scenario 3: Function that minimizes the mean time of deliveries in a day.
     * Takes into consideration the time window of 8 hours to make the deliveries.
-    * @return Returns the mean time.
+    * @return Returns a pair with the average time and the number of packages delivered.
     */
-    double optimizeExpressTransports();
+    std::pair<double, unsigned int> optimizeExpressTransports();
 
     /**
     * Calculates the quotient between the number of normal packages assigned and the total number of normal packages.
@@ -150,10 +156,10 @@ public:
     std::pair<unsigned int, unsigned int> minAndMaxNumPackagesOfCouriers();
 
     /**
-     * Returns the number of existing normal packages.
-     * @return amount of existing normal packages.
+     * Returns a pair with the number of existing normal (first value) and express (second value) packages.
+     * @return pair with the number of existing normal (first value) and express (second value) packages.
      */
-    unsigned int numNormalTransportPackages();
+    std::pair<unsigned int, unsigned int> numPackages();
 
     /**
     * Adds new packages to the normalTransport vector.

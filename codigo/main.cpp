@@ -24,14 +24,14 @@ void fileNameReader(string &defaultCourierPath, string &defaultNormalTransports,
 void optionChooser(WarehouseManagement &warehouseManagement){
     int optionInt;
     cout << "Which algorithm do you want to run?" << endl;
-    cout << "1: optimizeNormalPackagesDistribution: distribute the normal packages using the least amount of couriers" << endl;
-    cout << "2: optimizeProfit: distribute the normal packages so that the profit is maximized" << endl;
-    cout << "3: optimizeExpressTransports: distribute the express packages so that the average time of delivery is minimized" << endl;
-    cout << "4: getOperationEfficiency: returns the quotient between the number of normal packages delivered and the total number of normal packages received" << endl;
+    cout << "1: optimizeNormalPackagesDistribution: distribute the normal packages using the least amount of couriers." << endl;
+    cout << "2: optimizeProfit: distribute the normal packages so that the profit is maximized." << endl;
+    cout << "3: optimizeExpressTransports: distribute the express packages so that the average time of delivery is minimized." << endl;
+    cout << "4: getOperationEfficiency: returns the quotient between the number of normal packages delivered and the total number of normal packages received." << endl;
     cout << "5: changeCourierAvailability: the couriers may be unavailable, so this method is used to set the availability (boolean) of a given courier." << endl;
     cout << "6: distributePackages: distributes the packages that were assigned to the couriers, so that the number of packages assigned to each of the couriers is more balanced." << endl;
     cout << "7: addNormalTransportPackages: adds new normal transport packages to be delivered." << endl;
-    cout << "8: endOfBusiness: Mark the end of the working day" << endl;
+    cout << "8: endOfBusiness: Mark the end of the working day." << endl;
     cout << "Choose an option: ";
     string option;
     getline(cin, option);
@@ -39,7 +39,8 @@ void optionChooser(WarehouseManagement &warehouseManagement){
     cout << endl;
     string licensePlate, availability, fileName;
     bool courierExists = true;
-    pair<unsigned int, unsigned int> minMax;
+    pair<unsigned int, unsigned int> minMax, numPackages;
+    pair<double, unsigned int> scenario3Info;
     switch (optionInt) {
         case 1:
             cout << "The app used " << warehouseManagement.optimizeNormalPackagesDistribution() << " of the " << warehouseManagement.amountOfCouriersAvailable() << " couriers that were available." << endl;
@@ -48,7 +49,8 @@ void optionChooser(WarehouseManagement &warehouseManagement){
             cout << "The maximum profit was " << warehouseManagement.optimizeProfit() << " using " << warehouseManagement.getUsedCouriers() << " couriers." << endl;
             break;
         case 3:
-            cout << "The average time of delivery was " << warehouseManagement.optimizeExpressTransports() << "." << endl;
+            scenario3Info = warehouseManagement.optimizeExpressTransports();
+            cout << scenario3Info.second << " express packages were delivered with an average time of delivery of " << scenario3Info.first << "." << endl;
             break;
         case 4:
             cout << "The operation efficiency was " << warehouseManagement.getOperationEfficiency() << "." << endl;
@@ -82,15 +84,16 @@ void optionChooser(WarehouseManagement &warehouseManagement){
             getline(cin, fileName);
             if (!fileName.empty())
                 fileName = "../input/" + fileName;
-            cout << "Before calling the function, the number of normal transport packages to be delivered was " << warehouseManagement.numNormalTransportPackages() << "." << endl;
+            cout << "Before calling the function, the number of normal transport packages to be delivered was " << warehouseManagement.numPackages().first << "." << endl;
             if(warehouseManagement.addNormalTransportPackages(fileName))
-                cout << "After calling the function, the number of packages will be " << warehouseManagement.numNormalTransportPackages() << "." << endl;
+                cout << "After calling the function, the number of packages will be " << warehouseManagement.numPackages().first << "." << endl;
             else
                 cout << "The selected file doesn't exist." << endl;
             break;
         case 8:
             warehouseManagement.endOfBusiness();
-            cout << warehouseManagement.numNormalTransportPackages() << " to be delivered." << endl;
+            numPackages = warehouseManagement.numPackages();
+            cout << "There are " << numPackages.first << " normal packages and " << numPackages.second << " express packages to be delivered." << endl;
             break;
         default:
             cout << "Option out of bounds!" << endl;
@@ -101,7 +104,7 @@ int main() {
     string defaultCourierPath = "../input/carrinhas.txt";
     string defaultNormalTransports = "../input/normalTransports.txt";
     string defaultExpressTransports = "../input/expressTransports.txt";
-    cout << "Welcome to our package management app!" << endl;
+    cout << "Welcome to our package management app!\nIf you want to run the app with the default data, just leave the next 3 fields empty." << endl;
     fileNameReader(defaultCourierPath, defaultNormalTransports, defaultExpressTransports);
     WarehouseManagement warehouseManagement(defaultCourierPath, defaultNormalTransports, defaultExpressTransports);
 
@@ -113,6 +116,4 @@ int main() {
     } while(toupper(option[0]) == 'Y');
 
     return 0;
-
-
 }

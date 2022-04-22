@@ -115,4 +115,8 @@ void Courier::eraseDeliveries() {
     volAtual = 0;
 }
 
+bool operator==(const Courier &lhs, const Courier &rhs) {
+    return lhs.licensePlate == rhs.licensePlate;
+}
+
 

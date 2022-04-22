@@ -127,6 +127,8 @@ public:
     * @return Returns the license plate.
     */
     const std::string &getLicensePlate() const;
+
+    friend bool operator==(const Courier &lhs, const Courier &rhs);
 };
 
 

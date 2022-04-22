@@ -23,9 +23,16 @@ struct ExpressTransport{
     unsigned int volume;
     unsigned int payment;
     unsigned int timeToDelivery;
+    unsigned int priority;
+    bool assigned;
 
-    bool operator<(const ExpressTransport &rhs) const {
-        return timeToDelivery < rhs.timeToDelivery;
+    bool operator==(const ExpressTransport &rhs) const {
+        return weight == rhs.weight &&
+               volume == rhs.volume &&
+               payment == rhs.payment &&
+               timeToDelivery == rhs.timeToDelivery &&
+               priority == rhs.priority &&
+               assigned == rhs.assigned;
     }
 };
 

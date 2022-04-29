@@ -24,7 +24,7 @@
 */
 var NAVTREE =
 [
-  [ "Logística Urbana para Entrega de Mercadorias", "index.html", [
+  [ "DA_T1_G33", "index.html", [
     [ "Classes", "annotated.html", [
       [ "Class List", "annotated.html", "annotated_dup" ],
       [ "Class Index", "classes.html", null ],

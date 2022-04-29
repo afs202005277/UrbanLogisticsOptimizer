@@ -106,7 +106,8 @@ public:
     unsigned int optimizeNormalPackagesDistribution();
 
     /**
-    * Scenario 2: Function that maximizes the company profit for a given day. Takes use of the courierFiller function.
+    * Scenario 2: Function that maximizes the company profit for a given day.
+    * Takes use of the courierFiller function.
     * @return Returns the profit.
     */
     int optimizeProfit();

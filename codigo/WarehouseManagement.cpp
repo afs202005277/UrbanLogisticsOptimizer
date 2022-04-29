@@ -137,22 +137,27 @@ int WarehouseManagement::optimizeProfit() {
     resetElements();
     sort(couriers.begin(), couriers.end(), sortCouriersByRatio);
     sort(normalTransports.begin(), normalTransports.end(), sortNormalTransportByRatio);
-
-    unsigned int courierIdx = 0, expenses=0;
-    while(notAssignedNormalPackages > 0 && courierIdx < couriers.size()){
+    std::vector<NormalTransport> tmp;
+    unsigned int courierIdx = 0, expenses=0, revenue, max=0;
+    while(notAssignedNormalPackages > 0 && courierIdx < couriers.size()) {
+        revenue = 0;
         unsigned int packagesAssigned = courierFiller(couriers[courierIdx]);
         if (packagesAssigned != 0) {
+            for (auto &package: normalTransports) {
+                if (package.assigned)
+                    revenue += package.payment;
+            }
             notAssignedNormalPackages -= packagesAssigned;
             expenses += couriers[courierIdx].getTransportFee();
+            if (revenue - expenses > max){
+                max = revenue - expenses;
+                tmp = normalTransports;
+            }
         }
         courierIdx++;
     }
-    unsigned int revenue=0;
-    for (auto &package:normalTransports){
-        revenue += package.payment;
-    }
-
-    return (int) (revenue - expenses);
+    normalTransports = tmp;
+    return (int) max;
 }
 
 double WarehouseManagement::getOperationEfficiency() {
